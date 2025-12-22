@@ -1,0 +1,6 @@
+.verify-page{padding:36px;max-width:720px;margin:0 auto;text-align:center}
+.notice{padding:18px;border-radius:8px}
+.notice.success{background:#e6ffef;color:#0b6624}
+.notice.failed{background:#fff4f6;color:#b00020}
+.notice.error{background:#fff4f6;color:#b00020}
+.notice{color:#111}

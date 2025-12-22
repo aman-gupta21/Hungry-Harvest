@@ -1,0 +1,56 @@
+# ======================
+# GLOBAL
+# ======================
+node_modules/
+.env
+.env.*
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ======================
+# FRONTEND
+# ======================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.*
+
+# React / Vite / Next
+frontend/.vite/
+frontend/.next/
+frontend/out/
+
+# ======================
+# BACKEND
+# ======================
+backend/node_modules/
+backend/.env
+backend/.env.*
+backend/uploads/
+
+# ======================
+# DATABASE
+# ======================
+*.sqlite
+*.db
+
+# ======================
+# SYSTEM FILES
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# IDE / EDITOR
+# ======================
+.vscode/
+.idea/
+*.swp
+
+# ======================
+# COVERAGE
+# ======================
+coverage/

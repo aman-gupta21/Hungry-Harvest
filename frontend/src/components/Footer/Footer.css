@@ -1,0 +1,90 @@
+.footer{
+    color: #d9d9d9;
+    background-color: #323232;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 8vw;
+    padding-top: 80 px;
+
+    margin-top: 100px;
+    position: relative;
+    /* margin-top: ; */
+    bottom: 0;
+
+}
+
+.footer-content{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 80px;
+}
+
+.footer-content-left , .footer-content-center, .footer-content-right{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+}
+
+/* footer logo sizing */
+.footer-logo{
+    max-height: 50px;
+    width: 50px;
+    display: block;
+    margin-bottom: 8px;
+    border-radius: 50px;            /* rounded corners */
+    overflow: hidden;
+    background: #ffffff;           /* white background for contrast */
+    /* padding: 6px;                  small padding so logo breathes */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+@media (max-width:750px) {
+    .footer-logo{ max-height: 36px; padding: 4px; }
+}
+.footer-content-left li , .footer-content-center li, .footer-content-right li{
+    list-style: none;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    
+}
+.footer-content-center h2, .footer-content-right h2{
+   color: white;
+
+
+}
+
+.footer-social-icons img{
+    width: 40px;
+    margin-right: 15px;
+
+
+}
+
+
+
+.footer hr{
+    width: 100%;
+    background-color: gray;
+    height: 2px;
+    border: none;
+    margin: 20px 0;
+
+}
+
+@media (max-width:750px) {
+    .footer-content{
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
+    }
+    
+    .footer-copyright{
+        text-align: center;
+        
+    }
+}

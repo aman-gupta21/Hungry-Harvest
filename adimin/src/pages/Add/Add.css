@@ -1,0 +1,217 @@
+/* 🌈 Root Theme Variables */
+:root {
+  --bg: #f6f8ff;
+  --card: #ffffff;
+  --text: #0f1724;
+  --muted: #6b7280;
+  --primary-1: #556bff;
+  --primary-2: #6b8cff;
+  --radius: 10px;
+  --gap: 16px;
+  --border: #e6e9ef;
+  --shadow: 0 10px 30px rgba(16, 24, 40, 0.06);
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* 📦 Add Food Page Wrapper */
+.add {
+  min-height: calc(100vh - 80px);
+  padding: 40px 24px;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 🧾 Add Form Container */
+.add form.flex-col {
+  width: 100%;
+  max-width: 980px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 🖼️ Image Upload Section */
+.add-img-upload {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border: 1px dashed var(--border);
+  padding: 16px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fbfdff, #fff);
+  transition: all 0.2s ease;
+}
+
+.add-img-upload:hover {
+  background: #f9fbff;
+}
+
+.add-img-upload p {
+  font-weight: 700;
+  color: var(--text);
+  width: 140px;
+}
+
+.add-img-upload label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 120px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #eef2f8;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.add-img-upload label img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.add-img-upload label:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(85, 107, 255, 0.08);
+}
+
+/* ✏️ Input Groups */
+.add-product-name,
+.add-product-description,
+.add-category,
+.add-price {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-product-name p,
+.add-product-description p,
+.add-category p,
+.add-price p {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.add-product-name input[type="text"],
+.add-price input[type="number"],
+.add-product-description textarea,
+.add-category select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.add-product-description textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.add-product-name input:focus,
+.add-price input:focus,
+.add-product-description textarea:focus,
+.add-category select:focus {
+  border-color: rgba(85, 107, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(85, 107, 255, 0.1);
+}
+
+/* 💰 Category + Price Layout */
+.add-category-price {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.add-category,
+.add-price {
+  flex: 1;
+}
+
+/* 🚀 Submit Button */
+.add-btn {
+  margin-top: 10px;
+  align-self: flex-start;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(85, 107, 255, 0.12);
+  transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+}
+
+.add-btn:hover {
+  box-shadow: 0 8px 24px rgba(85, 107, 255, 0.18);
+}
+
+.add-btn:active {
+  transform: translateY(1px);
+}
+
+.add-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 🧩 Helpers */
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 📱 Responsive */
+@media (max-width: 900px) {
+  .add form.flex-col {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .add-img-upload label {
+    width: 140px;
+    height: 100px;
+  }
+
+  .add-category-price {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .add-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

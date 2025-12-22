@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mongoose": "^9.0.1",
+    "stripe": "^20.0.0"
+  }
+}

@@ -1,0 +1,170 @@
+/* ================== NAVBAR CONTAINER ================== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  /* background-color: #FAF9F6; */
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  top: 0;
+  z-index: 100;
+  border-radius: 22px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+/* ================== LOGO ================== */
+.logo {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+/* ================== NAV MENU ================== */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.navbar-menu li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  text-transform: capitalize;
+  transition: color 0.2s ease;
+}
+
+.navbar-menu li a:hover {
+  color: #ff6b35;
+}
+
+.navbar-menu li a.active {
+  color: #ff6b35;
+  border-bottom: 2px solid #ff6b35;
+  padding-bottom: 4px;
+}
+
+/* ================== RIGHT SECTION ================== */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+/* ================== SEARCH ICON ================== */
+.navbar-right svg {
+  cursor: pointer;
+  color: #333;
+}
+
+/* ================== CART ICON ================== */
+.navbar-search-icon {
+  position: relative;
+}
+
+.navbar-search-icon img {
+  width: 28px;
+  cursor: pointer;
+}
+
+/* CART DOT */
+.dot {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  width: 10px;
+  height: 10px;
+  background-color: #ff6b35;
+  border-radius: 50%;
+}
+
+/* ================== SIGN IN BUTTON ================== */
+.navbar-right button {
+  padding: 8px 18px;
+  border: none;
+  background-color: #ff6b35;
+  color: white;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-right button:hover {
+  background-color: #e85c2f;
+}
+
+/* ================== PROFILE ICON ================== */
+.navbar-profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-icon {
+  width: 30px;
+  height: 36px;
+  border-radius: 50px;
+}
+
+/* ================== PROFILE DROPDOWN ================== */
+.nav-profile-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 170px;
+  background-color: #ffffff;
+  list-style: none;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  z-index: 1000;
+}
+
+/* DROPDOWN ITEMS */
+.nav-profile-dropdown li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.nav-profile-dropdown li:hover {
+  background-color: #f5f5f5;
+}
+
+/* DROPDOWN ICONS */
+.nav-profile-dropdown img {
+  width: 20px;
+}
+
+/* DROPDOWN TEXT */
+.nav-profile-dropdown p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* DROPDOWN DIVIDER */
+.nav-profile-dropdown hr {
+  margin: 6px 0;
+  border: none;
+  height: 1px;
+  background-color: #eaeaea;
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 900px) {
+  .navbar-menu {
+    display: none;
+  }
+
+  .logo {
+    width: 120px;
+  }
+}
