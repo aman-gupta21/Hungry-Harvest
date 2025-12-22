@@ -1,68 +1,78 @@
-// ...existing code...
-import { Food } from "../models/foodModel.js"
+import { Food } from "../models/foodModel.js";
+import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
-
 
 const addFood = async (req, res) => {
   try {
-    const { name, description, price, category } = req.body
+    const { name, description, price, category } = req.body;
 
-    if (!name || !description || !price || !category) {
-      return res.status(400).json({ success: false, message: "Missing required fields" })
+    if (!name || !description || !price || !category || !req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields including image are required",
+      });
     }
 
-    const imageFilename = req.file ? req.file.filename : null
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "food-app",
+    });
+
+    // Remove local file
+    fs.unlinkSync(req.file.path);
 
     const food = new Food({
       name,
-      description,           
-      price: Number(price),  
+      description,
+      price: Number(price),
       category,
-      image: imageFilename
-    })
+      image: result.secure_url, // 🔥 cloud URL
+    });
 
-    await food.save()
-    return res.status(201).json({ success: true, message: "Food Added", food })
+    await food.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Food Added Successfully",
+      food,
+    });
   } catch (error) {
-    console.error(error)
-    if (error.name === "ValidationError") {
-      const errors = Object.keys(error.errors).reduce((acc, key) => {
-        acc[key] = error.errors[key].message
-        return acc
-      }, {})
-      return res.status(422).json({ success: false, message: "Validation failed", errors })
-    }
-    return res.status(500).json({ success: false, message: "Error", error: error.message })
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      error: error.message,
+    });
   }
-}
+};
 
-const listFood = async (req,res) => {
+const listFood = async (req, res) => {
   try {
     const foods = await Food.find({});
-    res.json({success:true,data:foods})
+    res.json({ success: true, data: foods });
   } catch (error) {
-    console.log(error);
-    res.json({success:false,message:"Error"});
+    res.json({ success: false, message: "Error fetching food list" });
   }
-}
+};
 
-const removeFood = async (req,res) =>{
+const removeFood = async (req, res) => {
   try {
     const food = await Food.findById(req.body.id);
-    if (food && food.image) {
-      fs.unlink(`uploads/${food.image}`, (err) => {
-        if (err) console.warn('Failed to delete image file:', err.message)
-      })
+
+    if (!food) {
+      return res.json({ success: false, message: "Food not found" });
     }
 
+    // Remove from Cloudinary
+    const publicId = food.image.split("/").pop().split(".")[0];
+    await cloudinary.uploader.destroy(`food-app/${publicId}`);
+
     await Food.findByIdAndDelete(req.body.id);
-    res.json({success:true,message:"food remove"})
 
+    res.json({ success: true, message: "Food Removed" });
   } catch (error) {
-    console.log(error)
-    res.json({success:false,message:"Error"})
-
+    res.json({ success: false, message: "Error deleting food" });
   }
-}
+};
 
-export { addFood, listFood,removeFood }
+export { addFood, listFood, removeFood };
