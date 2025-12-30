@@ -4,8 +4,11 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 
+// ✅ Vite env variable
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const LoginPopUp = ({ setShowLogin }) => {
-  const { url, setToken } = useContext(StoreContext)
+  const { setToken } = useContext(StoreContext)
 
   // true => Login, false => Sign up
   const [currState, setCurrState] = useState(true)
@@ -29,40 +32,30 @@ const LoginPopUp = ({ setShowLogin }) => {
     setSubmitting(true)
 
     try {
-      // Build endpoint depending on state
-      const endpoint = currState ? '/api/user/login' : '/api/user/register'
-      const newUrl = url.endsWith('/') ? url.slice(0, -1) + endpoint : url + endpoint
+      const endpoint = currState
+        ? '/api/user/login'
+        : '/api/user/register'
 
-      const response = await axios.post(newUrl, data)
+      // ✅ safe URL join
+      const url = `${BACKEND_URL}${endpoint}`
 
-      // Adjust to the actual server field name. Commonly it's `success` (one s).
-      if (response.data && response.data.success) {
+      const response = await axios.post(url, data)
+
+      if (response.data?.success) {
         const token = response.data.token
-        if (token) {
-          setToken(token)
-          localStorage.setItem('token', token)
-        }
+        setToken(token)
+        localStorage.setItem('token', token)
         setShowLogin(false)
       } else {
-        // show server message (backend should send something like { message: '...' })
-        const msg = response.data?.message || 'Authentication failed'
-        alert(msg)
+        alert(response.data?.message || 'Authentication failed')
       }
     } catch (err) {
-      // Better error reporting so you can debug 409 from server
       if (err.response) {
-        // server responded with a status code outside 2xx
-        const status = err.response.status
-        const serverMsg = err.response.data?.message || JSON.stringify(err.response.data)
-        alert(`Error ${status}: ${serverMsg}`)
-        console.error('Server error:', status, err.response.data)
-      } else if (err.request) {
-        // request made but no response
-        alert('No response from server. Check backend or network.')
-        console.error('No response:', err.request)
+        alert(`Error ${err.response.status}: ${err.response.data?.message}`)
+        console.error(err.response.data)
       } else {
-        alert('Error: ' + err.message)
-        console.error('Error:', err.message)
+        alert('Server not reachable')
+        console.error(err)
       }
     } finally {
       setSubmitting(false)
@@ -74,13 +67,12 @@ const LoginPopUp = ({ setShowLogin }) => {
       <form onSubmit={onLogin} className="login-popup-container">
         <div className="login-popup-title">
           <h2>{currState ? 'Login' : 'Sign up'}</h2>
-          <button type="button" className="close-btn" onClick={() => setShowLogin(false)}>
+          <button type="button" onClick={() => setShowLogin(false)}>
             <img src={assets.cross_icon} alt="close" />
           </button>
         </div>
 
         <div className="login-popup-inputs">
-          {/* show name only for sign up */}
           {!currState && (
             <input
               name="name"
@@ -110,24 +102,24 @@ const LoginPopUp = ({ setShowLogin }) => {
             required
           />
 
-          <button className="login-btn" type="submit" disabled={submitting}>
+          <button type="submit" disabled={submitting}>
             {submitting ? 'Please wait...' : currState ? 'Login' : 'Create account'}
           </button>
 
-          <div className="login-popup-condition">
-            <label>
-              <input className="check" type="checkbox" required />{' '}
-              <span>By continuing, I agree to the terms of use & privacy policy</span>
-            </label>
-          </div>
+          <label className="login-popup-condition">
+            <input type="checkbox" required />
+            <span>By continuing, I agree to the terms & privacy policy</span>
+          </label>
 
           {currState ? (
             <p>
-              Create a new account? <span onClick={() => setCurrState(false)}>Click here</span>
+              Create a new account?{' '}
+              <span onClick={() => setCurrState(false)}>Click here</span>
             </p>
           ) : (
             <p>
-              Already have an account? <span onClick={() => setCurrState(true)}>Login here</span>
+              Already have an account?{' '}
+              <span onClick={() => setCurrState(true)}>Login here</span>
             </p>
           )}
         </div>
