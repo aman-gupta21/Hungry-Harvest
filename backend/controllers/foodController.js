@@ -2,76 +2,153 @@ import { Food } from "../models/foodModel.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 
+// Helper to check if user is admin
+const isAdminUser = async (userId) => {
+  if (!userId) return false;
+  // You can add admin verification logic here if needed
+  return true; // For now, assume authenticated users adding food are admins
+};
+
+// Add food item (admin only)
 const addFood = async (req, res) => {
   try {
     const { name, description, price, category } = req.body;
 
-    if (!name || !description || !price || !category || !req.file) {
+    // Validation
+    if (!name || !description || !price || !category) {
       return res.status(400).json({
         success: false,
-        message: "All fields including image are required",
+        message: "Name, description, price, and category are required",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Image file is required",
+      });
+    }
+
+    // Validate price
+    const parsedPrice = parseFloat(price);
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Price must be a valid positive number",
       });
     }
 
     // Upload image to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "food-app",
-    });
+    let result;
+    try {
+      result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "food-delivery-app",
+      });
+    } catch (uploadError) {
+      console.error("Cloudinary upload error:", uploadError);
+      // Clean up local file
+      if (fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      return res.status(500).json({
+        success: false,
+        message: "Failed to upload image to cloud storage",
+      });
+    }
 
-    // Remove local file
-    fs.unlinkSync(req.file.path);
+    // Remove local file after successful upload
+    if (fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
 
+    // Create food item
     const food = new Food({
-      name,
-      description,
-      price: Number(price),
-      category,
-      image: result.secure_url, // 🔥 cloud URL
+      name: name.trim(),
+      description: description.trim(),
+      price: parsedPrice,
+      category: category.trim(),
+      image: result.secure_url,
     });
 
     await food.save();
 
     res.status(201).json({
       success: true,
-      message: "Food Added Successfully",
+      message: "Food item added successfully",
       food,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Add food error:", error);
+    
+    // Clean up local file if it exists
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
     res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: "Error adding food item",
       error: error.message,
     });
   }
 };
 
+// List all food items
 const listFood = async (req, res) => {
   try {
-    const foods = await Food.find({});
+    const foods = await Food.find({}).sort({ createdAt: -1 });
     res.json({ success: true, data: foods });
   } catch (error) {
-    res.json({ success: false, message: "Error fetching food list" });
+    console.error("List food error:", error);
+    res.status(500).json({ success: false, message: "Error fetching food list" });
   }
 };
 
+// Remove food item (admin only)
 const removeFood = async (req, res) => {
   try {
-    const food = await Food.findById(req.body.id);
+    const { id } = req.body;
 
-    if (!food) {
-      return res.json({ success: false, message: "Food not found" });
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Food ID is required",
+      });
     }
 
-    // Remove from Cloudinary
-    const publicId = food.image.split("/").pop().split(".")[0];
-    await cloudinary.uploader.destroy(`food-app/${publicId}`);
+    const food = await Food.findById(id);
 
-    await Food.findByIdAndDelete(req.body.id);
+    if (!food) {
+      return res.status(404).json({
+        success: false,
+        message: "Food item not found",
+      });
+    }
 
-    res.json({ success: true, message: "Food Removed" });
+    // Delete image from Cloudinary
+    try {
+      if (food.image) {
+        const publicId = food.image.split("/").pop().split(".")[0];
+        await cloudinary.uploader.destroy(`food-delivery-app/${publicId}`);
+      }
+    } catch (deleteError) {
+      console.warn("Warning: Failed to delete image from Cloudinary:", deleteError);
+      // Continue with food deletion even if image deletion fails
+    }
+
+    await Food.findByIdAndDelete(id);
+
+    res.json({
+      success: true,
+      message: "Food item removed successfully",
+    });
   } catch (error) {
-    res.json({ success: false, message: "Error deleting food" });
+    console.error("Remove food error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error deleting food item",
+      error: error.message,
+    });
   }
 };
 

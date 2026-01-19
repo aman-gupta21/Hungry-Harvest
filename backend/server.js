@@ -11,8 +11,9 @@ import { stripeWebhook } from "./controllers/webhookController.js";
 
 const app = express();
 
-// ✅ Render / Production compatible port
+// ✅ Production-ready port
 const port = process.env.PORT || 4000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 /*
 ---------------------------------------------------
@@ -30,15 +31,23 @@ app.post(
  Middleware
 ---------------------------------------------------
 */
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-app.use(
-  cors({
-    origin: "*", // 🔒 replace with frontend URL in production if needed
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
 
 /*
 ---------------------------------------------------
@@ -81,11 +90,38 @@ app.use((err, req, res, next) => {
   });
 });
 
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Endpoint not found",
+  });
+});
+
 /*
 ---------------------------------------------------
  Server Start
 ---------------------------------------------------
 */
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
+  console.log(`📝 Environment: ${NODE_ENV}`);
 });
+
+// Handle graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Closing server gracefully...");
+  server.close(() => {
+    console.log("Server closed");
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT received. Closing server gracefully...");
+  server.close(() => {
+    console.log("Server closed");
+    process.exit(0);
+  });
+});
+

@@ -23,12 +23,19 @@ const List = ({url}) => {
 
 
 const removeFood = async(foodId) => {
-  const response = await axios.post(`${url}/api/food/remove`,{id:foodId})
-  await fetchList()
-  if(response.data.success) {
-    toast.success(response.data.message)
-  }else{
-    toast.error("Error")
+  const token = localStorage.getItem('token')
+  try {
+    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+    const response = await axios.post(`${url}/api/food/remove`, {id: foodId}, config)
+    if(response.data.success) {
+      toast.success(response.data.message)
+      await fetchList()
+    } else {
+      toast.error(response.data.message || "Error removing food")
+    }
+  } catch (error) {
+    console.error(error)
+    toast.error(error.response?.data?.message || "Error removing food")
   }
 }
 
@@ -53,7 +60,7 @@ const removeFood = async(foodId) => {
           <div key={index} className="list-table-format">
             
             <img
-  src={`${url}/uploads/${item.image}`}
+  src={item.image}
   alt={item.name}
   className="food-image"
 />

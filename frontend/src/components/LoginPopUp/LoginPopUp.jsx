@@ -43,8 +43,16 @@ const LoginPopUp = ({ setShowLogin }) => {
 
       if (response.data?.success) {
         const token = response.data.token
+        const user = response.data.user
+        
         setToken(token)
         localStorage.setItem('token', token)
+        
+        // Store user info for admin panel
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user))
+        }
+        
         setShowLogin(false)
       } else {
         alert(response.data?.message || 'Authentication failed')

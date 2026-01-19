@@ -6,6 +6,7 @@ import { assets } from '../../assets/assets'
 const Add = ({ url }) => {
 
   const [image, setImage] = useState(null)
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -21,6 +22,7 @@ const Add = ({ url }) => {
     e.preventDefault()
 
     if (!image) return toast.error("Upload image")
+    if (!data.name || !data.description || !data.price) return toast.error("Fill all fields")
 
     const formData = new FormData()
     Object.keys(data).forEach(key => {
@@ -28,15 +30,32 @@ const Add = ({ url }) => {
     })
     formData.append("image", image)
 
+    const token = localStorage.getItem('token')
+    
     try {
-      const res = await axios.post(`${url}/api/food/add`, formData)
+      setLoading(true)
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      
+      const res = await axios.post(`${url}/api/food/add`, formData, config)
       if (res.data.success) {
         toast.success(res.data.message)
         setData({ name:"", description:"", price:"", category:"Salad" })
         setImage(null)
+      } else {
+        toast.error(res.data.message || "Failed to add food")
       }
-    } catch {
-      toast.error("Something went wrong while adding food")
+    } catch (error) {
+      console.error(error)
+      toast.error(error.response?.data?.message || "Something went wrong while adding food")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -56,7 +75,7 @@ const Add = ({ url }) => {
         <option>Cake</option>
       </select>
 
-      <button type="submit">ADD</button>
+      <button type="submit" disabled={loading}>{loading ? 'Adding...' : 'ADD'}</button>
     </form>
   )
 }

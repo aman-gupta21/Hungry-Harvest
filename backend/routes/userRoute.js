@@ -1,33 +1,40 @@
 import express from "express"
-import { loginUser, registerUser } from "../controllers/userController.js" // important: include .js
+import { loginUser, registerUser, getUserProfile, updateUserProfile, changePassword, promoteToAdmin } from "../controllers/userController.js"
 import authMiddleware from "../middleware/auth.js"
 import userModel from "../models/userModel.js"
+
 const router = express.Router()
 
+// Auth endpoints
 router.post("/login", loginUser)
 router.post("/register", registerUser)
 
-// Protected test endpoint to verify token is accepted and decoded
+// Protected endpoints
+router.get('/profile', authMiddleware, getUserProfile)
+router.put('/profile', authMiddleware, updateUserProfile)
+router.post('/change-password', authMiddleware, changePassword)
+router.post('/promote-admin', authMiddleware, promoteToAdmin)
+
+// Token validation endpoint (for admin panel)
 router.get('/test', authMiddleware, async (req, res) => {
   try {
-    const userId = req.userId
-    const user = await userModel.findById(userId).select('-password')
-    return res.json({ success: true, userId, user })
-  } catch (err) {
-    console.error('Auth test error', err)
-    return res.status(500).json({ success: false, message: 'Error' })
-  }
-})
-
-router.post('/promote', authMiddleware, async (req, res) => {
-  // delegate to controller to keep logic in one place
-  try {
-    // require ./userController.js promoteToAdmin
-    const { promoteToAdmin } = await import('../controllers/userController.js')
-    return promoteToAdmin(req, res)
-  } catch (err) {
-    console.error('promote route error', err)
-    return res.status(500).json({ success: false, message: 'Error' })
+    const user = await userModel.findById(req.userId).select('_id name email role')
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" })
+    }
+    res.json({ 
+      success: true, 
+      message: "Token is valid",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    })
+  } catch (error) {
+    console.error("Test endpoint error:", error)
+    res.status(500).json({ success: false, message: "Server error" })
   }
 })
 

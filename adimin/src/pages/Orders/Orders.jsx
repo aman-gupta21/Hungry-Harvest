@@ -4,7 +4,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const Orders = ({ url }) => {
-  const [token, setToken] = useState(localStorage.getItem('adminToken') || '')
+  const [token, setToken] = useState(localStorage.getItem('token') || '')
   const [tokenStatus, setTokenStatus] = useState('unknown') // 'unknown' | 'valid-admin' | 'not-admin' | 'invalid' | 'no-token'
   const [orders, setOrders] = useState([])
   const [page, setPage] = useState(1)
