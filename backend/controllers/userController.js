@@ -3,9 +3,11 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import validator from "validator"
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
 // create JWT token
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+  return jwt.sign({ id }, JWT_SECRET, { expiresIn: "7d" })
 }
 
 // login user

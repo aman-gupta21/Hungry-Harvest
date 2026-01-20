@@ -10,7 +10,7 @@ import { ToastContainer } from 'react-toastify';
 
 const App = () => {
 
-const url = "http://localhost:4000"
+const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000"
 const [isAuthenticated, setIsAuthenticated] = useState(false)
 const [loading, setLoading] = useState(true)
 
