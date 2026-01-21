@@ -32,3 +32,24 @@ a{
 }
 
 body { background-color: #fafafa !important; }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .app {
+    width: 90%;
+  }
+
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    width: 95%;
+  }
+
+  body {
+    font-size: 12px;
+  }
+}

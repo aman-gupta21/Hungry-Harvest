@@ -57,9 +57,59 @@
     color: black;
 }
 
-@media (max-width:1050) {
+@media (max-width:1050px) {
     .explore-menu-text{
         max-width: 100%;
         font-size: 14px;
     } 
+}
+
+@media (max-width:768px) {
+    .explore-menu h1 {
+        font-size: 24px;
+    }
+    
+    .explore-menu-text {
+        max-width: 100%;
+        font-size: 13px;
+    }
+    
+    .explore-menu-list {
+        gap: 20px;
+    }
+    
+    .explore-menu-list-item img {
+        width: 10vw;
+        min-width: 70px;
+    }
+    
+    .explore-menu-list-item p {
+        font-size: max(1.2vw, 14px);
+    }
+}
+
+@media (max-width:480px) {
+    .explore-menu h1 {
+        font-size: 20px;
+    }
+    
+    .explore-menu-text {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    
+    .explore-menu-list {
+        gap: 15px;
+        margin: 15px 0;
+    }
+    
+    .explore-menu-list-item img {
+        width: 12vw;
+        min-width: 60px;
+    }
+    
+    .explore-menu-list-item p {
+        font-size: 12px;
+        margin-top: 8px;
+    }
 }

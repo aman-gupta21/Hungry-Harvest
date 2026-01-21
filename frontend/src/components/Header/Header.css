@@ -65,3 +65,42 @@
         padding: 2vw 4vw;
     }
 }
+
+@media (max-width:600px) {
+    .header {
+        width: 90vw;
+        height: 50vw;
+        margin: 3vh auto;
+    }
+    
+    .header-contents {
+        max-width: 75%;
+        bottom: 5%;
+        left: 4vw;
+        gap: 1vw;
+    }
+    
+    .header-contents h2 {
+        font-size: max(3.5vw, 18px);
+    }
+    
+    .header-contents button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width:400px) {
+    .header {
+        height: 55vw;
+    }
+    
+    .header-contents h2 {
+        font-size: max(3vw, 14px);
+    }
+    
+    .header-contents button {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+}
