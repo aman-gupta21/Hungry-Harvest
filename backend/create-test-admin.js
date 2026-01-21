@@ -1,9 +1,4 @@
-#!/usr/bin/env node
 
-/**
- * Quick script to create a test admin user with predefined credentials
- * Usage: node create-test-admin.js
- */
 
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
@@ -11,7 +6,6 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: './.env' })
 
-// User Model
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -28,14 +22,12 @@ async function createTestAdmin() {
     await mongoose.connect(mongoUri)
     console.log('✅ Connected to MongoDB\n')
 
-    // Test admin credentials
     const testAdmin = {
       name: 'Admin Manager',
       email: 'admin@admin.com',
       password: 'Admin@123'
     }
 
-    // Check if already exists
     const existing = await User.findOne({ email: testAdmin.email })
     if (existing) {
       console.log('⚠️  Admin user already exists!')
@@ -44,10 +36,8 @@ async function createTestAdmin() {
       process.exit(0)
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(testAdmin.password, 10)
 
-    // Create admin
     const admin = new User({
       name: testAdmin.name,
       email: testAdmin.email,

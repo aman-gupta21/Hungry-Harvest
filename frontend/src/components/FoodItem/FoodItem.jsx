@@ -9,7 +9,6 @@ const FoodItem = ({ id, name, price, description, image }) => {
 
   const qty = cartItems[id] || 0
 
-  // ✅ Cloudinary image fix
   const imgSrc = image || assets.food_1
 
   return (

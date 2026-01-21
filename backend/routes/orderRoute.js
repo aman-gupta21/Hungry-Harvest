@@ -7,15 +7,12 @@ const orderRouter = express.Router()
 orderRouter.post("/place", authMiddleware, placeOrder)
 orderRouter.post("/userorders",authMiddleware,userOrders)
 
-// public verify endpoint (Stripe redirects here via frontend or can call backend directly)
 orderRouter.get("/verify", verifyOrder)
 
-// admin routes
 orderRouter.get('/list', authMiddleware, listOrders)
 orderRouter.get('/:id', authMiddleware, getOrder)
 orderRouter.patch('/:id', authMiddleware, updateOrder)
 
-// Server-Sent Events stream for order events (admin & customer UI listeners)
 orderRouter.get('/stream', (req, res) => {
   res.writeHead(200, {
     Connection: 'keep-alive',
@@ -23,7 +20,6 @@ orderRouter.get('/stream', (req, res) => {
     'Cache-Control': 'no-cache'
   })
 
-  // send a ping to establish connection
   res.write('event: connected\n')
   res.write(`data: {"ok":true}\n\n`)
 

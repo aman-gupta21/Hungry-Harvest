@@ -9,8 +9,8 @@
 }
 body{
   min-height: 100vh;
-  background-color: #fafafa; /* off-white site background */
-  color: #222; /* sensible default text color */
+  background-color: #fafafa; 
+  color: #222; 
 }
 a{
   text-decoration: none;
@@ -31,5 +31,4 @@ a{
   }
 }
 
-/* Ensure global off-white background overrides component-level vars */
 body { background-color: #fafafa !important; }

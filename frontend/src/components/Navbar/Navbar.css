@@ -1,4 +1,3 @@
-/* ================== NAVBAR CONTAINER ================== */
 .navbar {
   display: flex;
   align-items: center;
@@ -14,8 +13,6 @@
   margin-top: 15px;
   margin-bottom: 15px;
 }
-
-/* ================== LOGO ================== */
 .logo {
   width: 50px;
   height: 50px;
@@ -23,7 +20,6 @@
   border-radius: 50px;
 }
 
-/* ================== NAV MENU ================== */
 .navbar-menu {
   display: flex;
   list-style: none;
@@ -48,20 +44,17 @@
   padding-bottom: 4px;
 }
 
-/* ================== RIGHT SECTION ================== */
 .navbar-right {
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
-/* ================== SEARCH ICON ================== */
 .navbar-right svg {
   cursor: pointer;
   color: #333;
 }
 
-/* ================== CART ICON ================== */
 .navbar-search-icon {
   position: relative;
 }
@@ -71,7 +64,6 @@
   cursor: pointer;
 }
 
-/* CART DOT */
 .dot {
   position: absolute;
   top: -4px;
@@ -82,7 +74,6 @@
   border-radius: 50%;
 }
 
-/* ================== SIGN IN BUTTON ================== */
 .navbar-right button {
   padding: 8px 18px;
   border: none;
@@ -98,7 +89,6 @@
   background-color: #e85c2f;
 }
 
-/* ================== PROFILE ICON ================== */
 .navbar-profile {
   position: relative;
   cursor: pointer;
@@ -110,7 +100,6 @@
   border-radius: 50px;
 }
 
-/* ================== PROFILE DROPDOWN ================== */
 .nav-profile-dropdown {
   position: absolute;
   top: 50px;
@@ -124,7 +113,6 @@
   z-index: 1000;
 }
 
-/* DROPDOWN ITEMS */
 .nav-profile-dropdown li {
   display: flex;
   align-items: center;
@@ -138,19 +126,16 @@
   background-color: #f5f5f5;
 }
 
-/* DROPDOWN ICONS */
 .nav-profile-dropdown img {
   width: 20px;
 }
 
-/* DROPDOWN TEXT */
 .nav-profile-dropdown p {
   margin: 0;
   font-size: 14px;
   color: #333;
 }
 
-/* DROPDOWN DIVIDER */
 .nav-profile-dropdown hr {
   margin: 6px 0;
   border: none;
@@ -158,7 +143,6 @@
   background-color: #eaeaea;
 }
 
-/* ================== RESPONSIVE ================== */
 @media (max-width: 900px) {
   .navbar-menu {
     display: none;

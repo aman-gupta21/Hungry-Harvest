@@ -27,7 +27,6 @@ const Verify = () => {
       try {
         setStatus('verifying')
 
-        // ✅ CORRECT API CALL
         const res = await axios.get(`${url}/api/order/verify`, {
           params: { orderId, success }
         })

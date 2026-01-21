@@ -28,7 +28,6 @@ const PlaceOrder = () => {
   }
 
   useEffect(() => {
-    // debug
   }, [data])
 
   const handleProceed = async () => {
@@ -122,4 +121,3 @@ const PlaceOrder = () => {
 }
 
 export default PlaceOrder
-// ...existing code...

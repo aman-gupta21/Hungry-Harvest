@@ -35,10 +35,9 @@
     width: 50px;
     display: block;
     margin-bottom: 8px;
-    border-radius: 50px;            /* rounded corners */
+    border-radius: 50px;            
     overflow: hidden;
-    background: #ffffff;           /* white background for contrast */
-    /* padding: 6px;                  small padding so logo breathes */
+    background: #ffffff;           
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 

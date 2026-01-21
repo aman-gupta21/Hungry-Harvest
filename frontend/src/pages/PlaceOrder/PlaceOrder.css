@@ -1,6 +1,3 @@
-/* ...existing code... */
-
-/* App theme variables */
 :root{
   --bg: #f6f8ff;
   --card: #ffffff;
@@ -17,7 +14,6 @@
 *{box-sizing:border-box}
 body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--text); background:var(--bg)}
 
-/* Layout */
 .place-order{
   max-width:1200px;
   margin:32px auto;
@@ -43,7 +39,6 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   box-shadow:0 8px 24px rgba(16,24,40,0.06);
 }
 
-/* Titles */
 .title{
   margin:0 0 12px 0;
   font-size:20px;
@@ -51,7 +46,6 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   color:var(--text);
 }
 
-/* Fields */
 .multi-fields{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -80,13 +74,11 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   box-shadow: 0 6px 20px rgba(85,107,255,0.08);
 }
 
-/* Single inputs (when not inside multi-fields) */
 .place-order > input,
 .place-order-left > input{
   margin-bottom:12px;
 }
 
-/* Cart total card inside right pane */
 .cart-total h2{
   margin:0 0 12px 0;
   font-size:18px;
@@ -108,7 +100,7 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
 .cart-total-details p{margin:0; font-size:14px; color:var(--muted)}
 .cart-total-details b{font-size:16px; color:var(--text)}
 
-/* Proceed button */
+
 .place-order-right button,
 .place-order-left button{
   width:100%;
@@ -128,14 +120,12 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
 .place-order-left button:active{transform:translateY(1px)}
 .place-order-right button:disabled{opacity:.6; cursor:not-allowed}
 
-/* Promo / small helper */
 .place-order .small{
   font-size:13px;
   color:var(--muted);
   margin-top:8px;
 }
 
-/* Responsive */
 @media (max-width:1000px){
   .place-order{grid-template-columns:1fr 340px; padding:16px}
 }
@@ -147,12 +137,8 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   .multi-fields{grid-template-columns:1fr; gap:10px}
 }
 
-/* Accessibility helpers */
 .place-order input:invalid{box-shadow:0 0 0 3px rgba(239,68,68,0.08)}
-/* filepath: d:\food del\frontend\src\pages\PlaceOrder\PlaceOrder.css */
-/* ...existing code... */
 
-/* App theme variables */
 :root{
   --bg: #f6f8ff;
   --card: #ffffff;
@@ -169,7 +155,6 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
 *{box-sizing:border-box}
 body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--text); background:var(--bg)}
 
-/* Layout */
 .place-order{
   max-width:1200px;
   margin:32px auto;
@@ -195,7 +180,6 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   box-shadow:0 8px 24px rgba(16,24,40,0.06);
 }
 
-/* Titles */
 .title{
   margin:0 0 12px 0;
   font-size:20px;
@@ -203,7 +187,6 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   color:var(--text);
 }
 
-/* Fields */
 .multi-fields{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -232,13 +215,11 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   box-shadow: 0 6px 20px rgba(85,107,255,0.08);
 }
 
-/* Single inputs (when not inside multi-fields) */
 .place-order > input,
 .place-order-left > input{
   margin-bottom:12px;
 }
 
-/* Cart total card inside right pane */
 .cart-total h2{
   margin:0 0 12px 0;
   font-size:18px;
@@ -260,7 +241,6 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
 .cart-total-details p{margin:0; font-size:14px; color:var(--muted)}
 .cart-total-details b{font-size:16px; color:var(--text)}
 
-/* Proceed button */
 .place-order-right button,
 .place-order-left button{
   width:100%;
@@ -280,14 +260,12 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
 .place-order-left button:active{transform:translateY(1px)}
 .place-order-right button:disabled{opacity:.6; cursor:not-allowed}
 
-/* Promo / small helper */
 .place-order .small{
   font-size:13px;
   color:var(--muted);
   margin-top:8px;
 }
 
-/* Responsive */
 @media (max-width:1000px){
   .place-order{grid-template-columns:1fr 340px; padding:16px}
 }
@@ -299,5 +277,4 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue
   .multi-fields{grid-template-columns:1fr; gap:10px}
 }
 
-/* Accessibility helpers */
 .place-order input:invalid{box-shadow:0 0 0 3px rgba(239,68,68,0.08)}

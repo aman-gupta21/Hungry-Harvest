@@ -5,17 +5,14 @@ import userModel from "../models/userModel.js"
 
 const router = express.Router()
 
-// Auth endpoints
 router.post("/login", loginUser)
 router.post("/register", registerUser)
 
-// Protected endpoints
 router.get('/profile', authMiddleware, getUserProfile)
 router.put('/profile', authMiddleware, updateUserProfile)
 router.post('/change-password', authMiddleware, changePassword)
 router.post('/promote-admin', authMiddleware, promoteToAdmin)
 
-// Token validation endpoint (for admin panel)
 router.get('/test', authMiddleware, async (req, res) => {
   try {
     const user = await userModel.findById(req.userId).select('_id name email role')

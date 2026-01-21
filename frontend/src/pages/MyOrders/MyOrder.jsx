@@ -33,11 +33,10 @@ const MyOrder = () => {
 
     fetchOrders()
 
-    // subscribe to order SSEs so user's orders refresh on updates
     const es = new EventSource(`${url}/api/order/stream`)
     es.addEventListener('order', (e) => {
       try {
-        // simply refetch — server returns payload but refetching ensures consistent ordering
+     
         fetchOrders()
       } catch (err) {
         console.warn('SSE parse error', err)
@@ -46,7 +45,6 @@ const MyOrder = () => {
     })
 
     es.onerror = () => {
-      // ignore, EventSource will auto-retry
     }
 
     return () => es.close()

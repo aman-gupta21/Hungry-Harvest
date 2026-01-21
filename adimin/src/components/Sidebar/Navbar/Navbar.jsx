@@ -8,7 +8,6 @@ const Navbar = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Get user info from localStorage if available
     const userInfo = localStorage.getItem('user')
     if (userInfo) {
       setUser(JSON.parse(userInfo))

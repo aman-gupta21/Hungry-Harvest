@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' }
 }, { minimize: false, timestamps: true })
 
-// Use mongoose.models to avoid model overwrite errors in dev/hot reload
 const userModel = mongoose.models.User || mongoose.model("User", userSchema)
 
 export default userModel;

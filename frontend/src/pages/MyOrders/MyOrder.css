@@ -52,7 +52,6 @@
 
 .empty{text-align:center;color:var(--muted);padding:28px;border-radius:8px}
 
-/* responsive */
 @media (max-width:800px){
   .my-orders{padding:18px}
   .order-items li{padding:10px}

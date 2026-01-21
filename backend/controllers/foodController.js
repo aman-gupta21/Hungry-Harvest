@@ -2,19 +2,15 @@ import { Food } from "../models/foodModel.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 
-// Helper to check if user is admin
 const isAdminUser = async (userId) => {
   if (!userId) return false;
-  // You can add admin verification logic here if needed
-  return true; // For now, assume authenticated users adding food are admins
+  return true; 
 };
 
-// Add food item (admin only)
 const addFood = async (req, res) => {
   try {
     const { name, description, price, category } = req.body;
 
-    // Validation
     if (!name || !description || !price || !category) {
       return res.status(400).json({
         success: false,
@@ -29,7 +25,6 @@ const addFood = async (req, res) => {
       });
     }
 
-    // Validate price
     const parsedPrice = parseFloat(price);
     if (isNaN(parsedPrice) || parsedPrice <= 0) {
       return res.status(400).json({
@@ -37,8 +32,6 @@ const addFood = async (req, res) => {
         message: "Price must be a valid positive number",
       });
     }
-
-    // Upload image to Cloudinary
     let result;
     try {
       result = await cloudinary.uploader.upload(req.file.path, {
@@ -56,12 +49,10 @@ const addFood = async (req, res) => {
       });
     }
 
-    // Remove local file after successful upload
     if (fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
     }
 
-    // Create food item
     const food = new Food({
       name: name.trim(),
       description: description.trim(),
@@ -80,7 +71,6 @@ const addFood = async (req, res) => {
   } catch (error) {
     console.error("Add food error:", error);
     
-    // Clean up local file if it exists
     if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
     }
@@ -93,7 +83,6 @@ const addFood = async (req, res) => {
   }
 };
 
-// List all food items
 const listFood = async (req, res) => {
   try {
     const foods = await Food.find({}).sort({ createdAt: -1 });
@@ -103,8 +92,6 @@ const listFood = async (req, res) => {
     res.status(500).json({ success: false, message: "Error fetching food list" });
   }
 };
-
-// Remove food item (admin only)
 const removeFood = async (req, res) => {
   try {
     const { id } = req.body;
@@ -125,7 +112,6 @@ const removeFood = async (req, res) => {
       });
     }
 
-    // Delete image from Cloudinary
     try {
       if (food.image) {
         const publicId = food.image.split("/").pop().split(".")[0];
@@ -133,7 +119,7 @@ const removeFood = async (req, res) => {
       }
     } catch (deleteError) {
       console.warn("Warning: Failed to delete image from Cloudinary:", deleteError);
-      // Continue with food deletion even if image deletion fails
+    
     }
 
     await Food.findByIdAndDelete(id);

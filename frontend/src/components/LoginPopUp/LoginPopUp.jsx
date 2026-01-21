@@ -4,13 +4,11 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 
-// ✅ Vite env variable
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const LoginPopUp = ({ setShowLogin }) => {
   const { setToken } = useContext(StoreContext)
 
-  // true => Login, false => Sign up
   const [currState, setCurrState] = useState(true)
 
   const [data, setData] = useState({
@@ -36,7 +34,6 @@ const LoginPopUp = ({ setShowLogin }) => {
         ? '/api/user/login'
         : '/api/user/register'
 
-      // ✅ safe URL join
       const url = `${BACKEND_URL}${endpoint}`
 
       const response = await axios.post(url, data)
@@ -48,7 +45,7 @@ const LoginPopUp = ({ setShowLogin }) => {
         setToken(token)
         localStorage.setItem('token', token)
         
-        // Store user info for admin panel
+
         if (user) {
           localStorage.setItem('user', JSON.stringify(user))
         }

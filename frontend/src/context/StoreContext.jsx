@@ -8,10 +8,8 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState([]);
   const [token, setToken] = useState("");
 
-  // ✅ CORRECT backend URL (Render)
   const url = import.meta.env.VITE_BACKEND_URL;
 
-  // ---------------- CART FUNCTIONS ----------------
 
   const addToCart = async (itemId) => {
     setCartItems((prev) => ({
@@ -60,7 +58,6 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
-  // ---------------- API CALLS ----------------
 
   const fetchFoodList = async () => {
     const response = await axios.get(`${url}/api/food/list`);
@@ -76,7 +73,6 @@ const StoreContextProvider = (props) => {
     setCartItems(response.data.cartData);
   };
 
-  // ---------------- INITIAL LOAD ----------------
 
   useEffect(() => {
     async function loadData() {
@@ -91,7 +87,6 @@ const StoreContextProvider = (props) => {
     loadData();
   }, []);
 
-  // ---------------- CONTEXT VALUE ----------------
 
   const contextValue = {
     food_list,

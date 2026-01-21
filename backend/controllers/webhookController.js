@@ -17,10 +17,8 @@ export const stripeWebhook = async (req, res) => {
     let event
 
     if (endpointSecret && sig && stripe) {
-      // verify signature
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret)
     } else {
-      // no webhook secret configured; accept the payload (not secure)
       try {
         event = JSON.parse(req.body.toString())
       } catch (e) {
@@ -29,7 +27,6 @@ export const stripeWebhook = async (req, res) => {
       }
     }
 
-    // Handle the event
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object
@@ -53,11 +50,9 @@ export const stripeWebhook = async (req, res) => {
         break
       }
       default:
-        // Unexpected event type
         console.log(`Unhandled event type ${event.type}`)
     }
 
-    // Return a 200 to acknowledge receipt of the event
     res.json({ received: true })
   } catch (err) {
     console.error('Webhook error', err)

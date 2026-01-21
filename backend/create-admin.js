@@ -1,9 +1,3 @@
-#!/usr/bin/env node
-
-/**
- * Quick setup script to create an admin user
- * Usage: node create-admin.js
- */
 
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
@@ -23,7 +17,6 @@ const question = (prompt) => {
   })
 }
 
-// User Model
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -35,18 +28,15 @@ const User = mongoose.model('user', userSchema)
 
 async function createAdmin() {
   try {
-    // Connect to MongoDB
     console.log('\n📌 Connecting to MongoDB...')
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/food_delivery')
     console.log('✅ Connected to MongoDB\n')
 
-    // Get admin details
     const name = await question('Admin Name: ')
     const email = await question('Admin Email: ')
     const password = await question('Admin Password: ')
     const confirmPassword = await question('Confirm Password: ')
 
-    // Validate
     if (password !== confirmPassword) {
       console.error('\n❌ Passwords do not match!')
       process.exit(1)
@@ -57,17 +47,14 @@ async function createAdmin() {
       process.exit(1)
     }
 
-    // Check if user exists
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       console.error('\n❌ User with this email already exists!')
       process.exit(1)
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Create admin
     const admin = new User({
       name,
       email,

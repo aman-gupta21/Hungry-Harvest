@@ -11,7 +11,6 @@ if (stripeSecret) {
   console.warn('STRIPE_SECRET_KEY is not set. Stripe operations will fail until configured.');
 }
 
-// helper to check admin privileges
 const isAdminUser = async (userId) => {
   if (!userId) return false
   const adminId = process.env.ADMIN_ID
@@ -24,11 +23,9 @@ const isAdminUser = async (userId) => {
   return false
 }
 
-//placing user order for frontend
 const placeOrder = async (req,res) => {
   const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173";
 
-  // Auth middleware should set req.userId
   const userId = req.userId;
   if (!userId) return res.status(401).json({ success:false, message: "Not Authorized" });
 
@@ -48,19 +45,17 @@ const placeOrder = async (req,res) => {
     await newOrder.save();
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-    // emit order created event for real-time admin/customer UI
     try { emitOrder('created', newOrder) } catch (e) { console.warn('emitOrder failed', e) }
 
     const line_items = items.map((item) => ({
       price_data: {
         currency: "inr",
         product_data: { name: item.name },
-        unit_amount: Math.round(item.price * 100) // convert to paise (no extra multiplier)
+        unit_amount: Math.round(item.price * 100) 
       },
       quantity: item.quantity
     }));
 
-    // delivery charge
     line_items.push({
       price_data: {
         currency: "inr",
@@ -92,7 +87,6 @@ const placeOrder = async (req,res) => {
 
 const verifyOrder = async (req, res) => {
   try {
-    // support both query (redirect) and body
     const { orderId, success } = { ...req.query, ...req.body }
 
     if (!orderId) return res.status(400).json({ success: false, message: 'Missing orderId' })
@@ -117,8 +111,6 @@ const verifyOrder = async (req, res) => {
   }
 }
 
-
-// user order for frontend
 const userOrders = async (req, res) => {
   const userId = req.userId;
   if (!userId) return res.status(401).json({ success:false, message: "Not Authorized" });
@@ -132,7 +124,6 @@ const userOrders = async (req, res) => {
   }
 }
 
-// admin: list all orders (supports ?status= and pagination)
 const listOrders = async (req, res) => {
   try {
     const userId = req.userId
@@ -157,17 +148,9 @@ const listOrders = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error listing orders' })
   }
 
-  // try {
-  //   const orders = await orderModel.find({})
-  //   res.json({success:true,data:orders})
-  // } catch (error) {
-  //   console.log(error);
-  //   res.json({success:false,message:"error"})
-    
-  // }
+  
 }
 
-// admin or owner: get single order
 const getOrder = async (req, res) => {
   try {
     const orderId = req.params.id
@@ -190,7 +173,6 @@ const getOrder = async (req, res) => {
   }
 }
 
-// admin: update order status or payment
 const updateOrder = async (req, res) => {
   try {
     const orderId = req.params.id

@@ -5,12 +5,10 @@ import validator from "validator"
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// create JWT token
 const createToken = (id) => {
   return jwt.sign({ id }, JWT_SECRET, { expiresIn: "7d" })
 }
 
-// login user
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -46,7 +44,6 @@ const loginUser = async (req, res) => {
   }
 }
 
-// register user
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body
   
@@ -55,27 +52,22 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ success: false, message: "Name, email, and password are required" })
     }
 
-    // Check if user already exists
     const userExists = await userModel.findOne({ email })
     if (userExists) {
       return res.status(409).json({ success: false, message: "User already exists with this email" })
     }
 
-    // Validate email
     if (!validator.isEmail(email)) {
       return res.status(400).json({ success: false, message: "Please enter a valid email address" })
     }
 
-    // Validate password strength
     if (password.length < 8) {
       return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" })
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    // Create new user
     const newUser = new userModel({
       name,
       email,
@@ -101,7 +93,6 @@ const registerUser = async (req, res) => {
   }
 }
 
-// Get user profile
 const getUserProfile = async (req, res) => {
   try {
     const userId = req.userId
@@ -121,7 +112,6 @@ const getUserProfile = async (req, res) => {
   }
 }
 
-// Update user profile
 const updateUserProfile = async (req, res) => {
   try {
     const userId = req.userId
@@ -138,7 +128,6 @@ const updateUserProfile = async (req, res) => {
         return res.status(400).json({ success: false, message: "Invalid email format" })
       }
       
-      // Check if email is already in use
       const emailExists = await userModel.findOne({ email, _id: { $ne: userId } })
       if (emailExists) {
         return res.status(409).json({ success: false, message: "Email already in use" })
@@ -155,7 +144,6 @@ const updateUserProfile = async (req, res) => {
   }
 }
 
-// Change password
 const changePassword = async (req, res) => {
   try {
     const userId = req.userId
@@ -196,10 +184,8 @@ const changePassword = async (req, res) => {
   }
 }
 
-// promote currently authenticated user to admin using a secret
 const promoteToAdmin = async (req, res) => {
   try {
-    // ensure secret is configured
     if (!process.env.ADMIN_PROMOTE_SECRET) {
       return res.status(500).json({ success: false, message: 'ADMIN_PROMOTE_SECRET is not configured on the server. Set it in .env and restart backend.' })
     }
